@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>薏婷的重生之旅 v5.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+TC:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-marble: #f4f4f4;
+            --morandi-blue: #91a3b0;
+            --morandi-pink: #d8a7b1;
+            --morandi-green: #b4c4ae;
+            --morandi-grey: #a1a1a1;
+            --text-dark: #4a4a4a;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Noto Sans TC', 'ZCOOL KuaiLe', sans-serif;
+            background-color: var(--bg-marble);
+            background-image: url('https://www.transparenttextures.com/patterns/marble-white.png');
+            color: var(--text-dark);
+            padding-bottom: 100px;
+        }
+
+        header { padding: 25px 20px; text-align: center; }
+        h1 { font-weight: 900; color: var(--morandi-blue); margin: 0; font-size: 1.6rem; }
+
+        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
+        .card {
+            background: white; border: 3px solid var(--text-dark);
+            border-radius: 20px; padding: 15px;
+            box-shadow: 5px 5px 0px var(--text-dark);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-decoration: none; color: var(--text-dark); font-weight: 900; text-align: center;
+            min-height: 80px;
+        }
+        .card:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0px var(--text-dark); }
+        .card-main { grid-column: span 2; background-color: var(--morandi-blue); color: white; height: 90px; font-size: 1.3rem; }
+        .card-pink { background-color: var(--morandi-pink); color: white; }
+        .card-green { background-color: var(--morandi-green); color: white; }
+        .card-grey { background-color: #ddd; }
+        .card-tan { background-color: #c2b280; color: white; }
+        
+        .mood-box {
+            grid-column: span 2; font-size: 0.9rem; background: #fff;
+            border: 2px dashed var(--morandi-pink); padding: 12px;
+            border-radius: 15px; text-align: center; margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .content-section { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .active { display: block; }
+
+        /* 行程卡片 */
+        .info-card { background: white; border: 3px solid var(--text-dark); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 4px 4px 0px var(--morandi-grey); }
+        .info-title { background: var(--morandi-blue); color: white; display: inline-block; padding: 5px 15px; border-radius: 10px; margin-bottom: 10px; font-weight: 900; }
+        
+        .timeline-table { width: 100%; border-collapse: collapse; }
+        .timeline-table td { padding: 10px 5px; border-bottom: 1px solid #eee; font-size: 0.9rem; vertical-align: top;}
+        .time-label { font-weight: 900; color: var(--morandi-pink); width: 85px; }
+
+        .day-nav { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;}
+        .day-btn { padding: 10px 20px; border: 2px solid var(--text-dark); border-radius: 20px; background: white; font-weight: 900; cursor: pointer; white-space: nowrap; }
+        .day-btn.active-day { background: var(--morandi-blue); color: white; }
+
+        .footer-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 75%; background: var(--text-dark); color: white; padding: 15px; border-radius: 50px; text-align: center; font-weight: 900; cursor: pointer; z-index: 1000; }
+        
+        /* 清單樣式 */
+        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .list-item { background: white; border: 2px solid var(--text-dark); padding: 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: 900; }
+        .delete-btn { background: #ff6b6b; color: white; border: 1px solid var(--text-dark); border-radius: 50%; width: 25px; height: 25px; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1rem; }
+        .add-btn { background: var(--morandi-green); color: white; border: 2px solid var(--text-dark); border-radius: 50%; width: 40px; height: 40px; font-size: 1.5rem; cursor: pointer; }
+
+        /* 計算機 */
+        .calc-display { background: #fff; border: 3px solid var(--text-dark); border-radius: 15px; padding: 15px; margin-bottom: 10px; text-align: right; }
+        .switch-btn { background: var(--morandi-grey); color: white; border: 2px solid var(--text-dark); padding: 5px 15px; border-radius: 10px; font-weight: 900; margin-bottom: 10px; cursor: pointer; }
+        .calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .btn-calc { padding: 15px; background: white; border: 2px solid var(--text-dark); border-radius: 10px; font-weight: 900; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🇰🇷 薏婷的重生之旅</h1>
+</header>
+
+<div id="home" class="content-section active">
+    <div class="menu-grid">
+        <div class="card card-main" onclick="showSection('schedule')">🗓️ 行程 & 交通</div>
+        <div class="card card-pink" onclick="showSection('health')">💊 恢復 & 保健</div>
+        <div class="card card-green" onclick="showSection('budget')">💰 匯率計算</div>
+        <div class="card card-tan" onclick="showSection('packing')">🧳 行李清單</div>
+        <div class="card card-grey" onclick="showSection('souvenir')">🎁 伴手禮清單</div>
+        <div class="mood-box">「薏婷，妳很勇敢，這次是為了更好的自己，加油唷！❤️」</div>
+    </div>
+</div>
+
+<div id="health" class="content-section">
+    <div class="info-card">
+        <div class="info-title">🕒 每日服用時間表</div>
+        <table class="timeline-table">
+            <tr><td class="time-label">08:00 空腹</td><td><strong>高劑量鳳梨酵素</strong><br><small>消腫黃金期，空腹吸收最好。</small></td></tr>
+            <tr><td class="time-label">09:00 早餐後</td><td><strong>補血鐵劑</strong><br><small>餐後吃減少胃部不適，忌茶/咖啡。</small></td></tr>
+            <tr><td class="time-label">12:00 空腹</td><td><strong>高劑量鳳梨酵素</strong><br><small>維持體內消腫濃度。</small></td></tr>
+            <tr><td class="time-label">15:00 下午</td><td><strong>蜈蚣草水 (1/2)</strong><br><small>排水消腫。生理期需暫停。</small></td></tr>
+            <tr><td class="time-label">21:00 睡前</td><td><strong>蜈蚣草水 (2/2)</strong><br><small>睡前最後加強循環。</small></td></tr>
+        </table>
+    </div>
+
+    <div class="info-card">
+        <div class="info-title">🩹 術前後照顧要點</div>
+        <ul style="padding-left: 20px; font-weight: 900; line-height: 1.6; font-size: 0.9rem; margin: 0;">
+            <li style="color: #d63031;">術前兩週：停止服用魚油、維他命E、阿斯匹靈。</li>
+            <li>穿著：準備寬鬆、深色褲子（防止組織液滲出滲透）、好穿脫拖鞋。</li>
+            <li>物品：免洗內褲、濕紙巾（擦身用）、吸管（術後起身喝水較省力）。</li>
+            <li>環境：傷口嚴禁碰水，保持乾燥。</li>
+        </ul>
+    </div>
+    <div class="footer-btn" onclick="showSection('home')">返回首頁</div>
+</div>
+
+<div id="schedule" class="content-section">
+    <div class="day-nav">
+        <button class="day-btn active-day" onclick="showDay(1, this)">03/03 出發</button>
+        <button class="day-btn" onclick="showDay(2, this)">03/04 面診</button>
+        <button class="day-btn" onclick="showDay(3, this)">03/05 回程</button>
+    </div>
+
+    <div id="day1" class="day-content">
+        <div class="info-card">
+            <div class="info-title">✈️ 航班資訊</div>
+            <p style="margin: 5px 0; font-weight: 900;">18:15 酷航 TR896 ➔ 21:45 抵達仁川</p>
+        </div>
+        <div class="info-card">
+            <div class="info-title">🚌 機場交通建議</div>
+            <p style="margin: 5px 0; font-size: 0.9rem; line-height: 1.6;">
+                <strong>1. 機場巴士 6002：</strong><br>
+                在仁川機場搭乘，於「西橋洞/合井站」下車，步行或短程計程車至民宿。<br>
+                <strong>2. 機場快線 AREX：</strong><br>
+                搭至「弘大入口站」，可轉乘 2 號線至合井站，或直接攔計程車前往望遠路。
+            </p>
+        </div>
+    </div>
+
+    <div id="day2" class="day-content" style="display:none;">
+        <div class="info-card">
+            <div class="info-title">📍 重要面診</div>
+            <p style="margin: 5px 0; font-weight: 900; font-size: 1.2rem; color: #d63031;">12:30 CD SLIM</p>
+            <p style="margin: 5px 0; font-size: 0.9rem;">地點：診所地址 (記得確認地圖定位)。</p>
+        </div>
+    </div>
+
+    <div id="day3" class="day-content" style="display:none;">
+        <div class="info-card">
+            <div class="info-title">✈️ 航班資訊</div>
+            <p style="margin: 5px 0; font-weight: 900;">23:00 酷航 TR897 ➔ 00:45 (+1) 抵達桃園</p>
+            <p style="margin: 5px 0; font-size: 0.9rem; color: #666;">※ 手術隔天回診結束後，預留充足時間辦理退稅與入關。</p>
+        </div>
+    </div>
+    <div class="footer-btn" onclick="showSection('home')">返回首頁</div>
+</div>
+
+<div id="packing" class="content-section">
+    <div class="list-header">
+        <h2 style="font-weight:900;">🧳 行李清單</h2>
+        <button class="add-btn" onclick="addListItem('packing-container')">+</button>
+    </div>
+    <div id="packing-container">
+        <div class="list-item"><span><input type="checkbox"> 護照、電子簽證、eSIM</span><div class="delete-btn" onclick="this.parentElement.remove()">-</div></div>
+        <div class="list-item"><span><input type="checkbox"> 寬鬆深色褲子、拖鞋</span><div class="delete-btn" onclick="this.parentElement.remove()">-</div></div>
+        <div class="list-item"><span><input type="checkbox"> 免洗內褲、濕紙巾、吸管</span><div class="delete-btn" onclick="this.parentElement.remove()">-</div></div>
+        <div class="list-item"><span><input type="checkbox"> 鳳梨酵素、鐵劑、蜈蚣草</span><div class="delete-btn" onclick="this.parentElement.remove()">-</div></div>
+    </div>
+    <div class="footer-btn" onclick="showSection('home')">返回首頁</div>
+</div>
+
+<div id="souvenir" class="content-section">
+    <div class="list-header">
+        <h2 style="font-weight:900;">🎁 伴手禮清單</h2>
+        <button class="add-btn" onclick="addListItem('souvenir-container')">+</button>
+    </div>
+    <div id="souvenir-container">
+        <div class="list-item"><span><input type="checkbox"> 氣墊梳</span><div class="delete-btn" onclick="this.parentElement.remove()">-</div></div>
+    </div>
+    <div class="footer-btn" onclick="showSection('home')">返回首頁</div>
+</div>
+
+<div id="budget" class="content-section">
+    <button class="switch-btn" onclick="toggleCurrency()" id="mode-text">KRW ➔ TWD</button>
+    <div class="calc-display">
+        <div id="input-val" style="font-size: 1.5rem; font-weight: 900;">0</div>
+        <div id="result-val" style="color: var(--morandi-pink); font-size: 1.2rem;">≈ 0 TWD</div>
+    </div>
+    <div class="calc-grid">
+        <script>
+            for(let i=1; i<=9; i++) document.write(`<button class="btn-calc" onclick="addNum(${i})">${i}</button>`);
+        </script>
+        <button class="btn-calc" onclick="clearCalc()" style="background:var(--morandi-pink); color:white;">C</button>
+        <button class="btn-calc" onclick="addNum(0)">0</button>
+        <button class="btn-calc" onclick="addNum('000')">000</button>
+    </div>
+    <div class="footer-btn" onclick="showSection('home')">返回首頁</div>
+</div>
+
+<script>
+    function showSection(id) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function showDay(day, btn) {
+        document.querySelectorAll('.day-content').forEach(d => d.style.display = 'none');
+        document.getElementById('day' + day).style.display = 'block';
+        document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active-day'));
+        btn.classList.add('active-day');
+    }
+
+    function addListItem(containerId) {
+        const item = prompt("要增加什麼呢？");
+        if(item) {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<span><input type="checkbox"> ${item}</span><div class="delete-btn" onclick="this.parentElement.remove()">-</div>`;
+            container.appendChild(div);
+        }
+    }
+
+    let inputStr = "";
+    let isKrwToTwd = true;
+    const rate = 0.0235; 
+
+    function toggleCurrency() {
+        isKrwToTwd = !isKrwToTwd;
+        document.getElementById('mode-text').innerText = isKrwToTwd ? "KRW ➔ TWD" : "TWD ➔ KRW";
+        clearCalc();
+    }
+
+    function addNum(n) { inputStr += n; updateCalc(); }
+    function clearCalc() { inputStr = ""; updateCalc(); }
+    function updateCalc() {
+        const val = inputStr || "0";
+        document.getElementById('input-val').innerText = val + (isKrwToTwd ? " ₩" : " $");
+        let result = isKrwToTwd ? Math.round(val * rate) : Math.round(val / rate);
+        document.getElementById('result-val').innerText = "≈ " + result + (isKrwToTwd ? " TWD" : " KRW");
+    }
+</script>
+
+</body>
+</html>
